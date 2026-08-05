@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ja">
 <head>
+  <meta name="google-site-verification" content="tbB-y8CKQ6ujEaTCaXUcsQ9evKJ8WNfHlkAcgCVyb_c" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>BL・TL小説ランキング｜レビュー評価の高いFANZA官能小説まとめ</title>
