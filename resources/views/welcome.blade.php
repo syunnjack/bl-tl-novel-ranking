@@ -129,6 +129,10 @@
     </section>
   </div>
 
+  <div class="wrap" style="padding:24px 0;text-align:center;">
+    <a rel="noopener" href="https://www.dlsite.com/home/?utm_medium=affiliate&utm_campaign=bnlink&utm_content=bn_sp_300_250_dojin_01.jpg" target="_blank"><img src="https://www.dlsite.com/img/male/dojin/bn_sp_300_250_dojin_01.jpg" alt="同人誌、同人ゲーム、同人ソフトのダウンロードショップ - DLsite" width="300" height="250" border="0" /></a>
+  </div>
+
   <footer>
     <div class="wrap">
       <p>本サイトはFANZAアフィリエイトプログラムを利用し、DMM.com公式APIから取得したレビュー情報をもとに構成しています。詳細は必ずリンク先の公式ページでご確認ください。</p>
