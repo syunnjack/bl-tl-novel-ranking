@@ -29,33 +29,10 @@ jobs:
           npm ci
           npm run build
 
-      - name: Write production .env
-        run: |
-          cat > .env <<EOF
-          APP_NAME="BLTL小説ランキング"
-          APP_ENV=production
-          APP_KEY=${{ secrets.APP_KEY }}
-          APP_DEBUG=false
-          APP_URL=${{ secrets.APP_URL }}
-          DB_CONNECTION=sqlite
-          LOG_CHANNEL=stack
-          LOG_LEVEL=error
-          CACHE_STORE=file
-          SESSION_DRIVER=file
-          QUEUE_CONNECTION=sync
-          DMM_API_ID=${{ secrets.DMM_API_ID }}
-          DMM_AFFILIATE_ID=${{ secrets.DMM_AFFILIATE_ID }}
-          DUGA_APP_ID=${{ secrets.DUGA_APP_ID }}
-          DUGA_AGENT_ID=${{ secrets.DUGA_AGENT_ID }}
-          SOKMIL_API_KEY=${{ secrets.SOKMIL_API_KEY }}
-          SOKMIL_AFFILIATE_ID=${{ secrets.SOKMIL_AFFILIATE_ID }}
-          GA4_MEASUREMENT_ID=${{ secrets.GA4_MEASUREMENT_ID }}
-          EOF
-
       - name: Deploy files via rsync over SSH
         uses: burnett01/rsync-deployments@7.0.1
         with:
-          switches: -avzr --delete --exclude=".git" --exclude=".github" --exclude="node_modules" --exclude="tests" --exclude="database/database.sqlite" --exclude="storage/app" --exclude="storage/logs" --exclude="storage/framework"
+          switches: -avzr --delete --exclude=".git" --exclude=".github" --exclude="node_modules" --exclude="tests" --exclude=".env" --exclude="database/database.sqlite" --exclude="storage/app" --exclude="storage/logs" --exclude="storage/framework"
           path: ./
           remote_path: ${{ secrets.COLORFULBOX_DEPLOY_PATH }}
           remote_host: ${{ secrets.COLORFULBOX_SSH_HOST }}
@@ -73,12 +50,13 @@ jobs:
           script: |
             set -e
             cd "${{ secrets.COLORFULBOX_DEPLOY_PATH }}"
+            PHP=/opt/cpanel/ea-php83/root/usr/bin/php
             mkdir -p database storage/framework/cache storage/framework/sessions storage/framework/views storage/logs storage/app
             touch database/database.sqlite
             chmod -R 775 storage database
-            php artisan migrate --force
-            php artisan config:cache
-            php artisan route:cache
-            php artisan view:cache
-            php artisan novels:sync
-            (crontab -l 2>/dev/null | grep -F "novels:sync") || ( (crontab -l 2>/dev/null; echo "25 * * * * cd \"${{ secrets.COLORFULBOX_DEPLOY_PATH }}\" && php artisan novels:sync >> storage/logs/sync.log 2>&1") | crontab - )
+            $PHP artisan migrate --force
+            $PHP artisan config:cache
+            $PHP artisan route:cache
+            $PHP artisan view:cache
+            /opt/cpanel/ea-php83/root/usr/bin/php artisan novels:sync
+            (crontab -l 2>/dev/null | grep -F "novels:sync") || ( (crontab -l 2>/dev/null; echo "25 * * * * cd \"${{ secrets.COLORFULBOX_DEPLOY_PATH }}\" && /opt/cpanel/ea-php83/root/usr/bin/php artisan novels:sync >> storage/logs/sync.log 2>&1") | crontab - )
