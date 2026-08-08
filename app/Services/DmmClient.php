@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Http;
 class DmmClient
 {
     public function __construct(
-        private readonly string $apiId,
-        private readonly string $affiliateId,
+        private readonly ?string $apiId,
+        private readonly ?string $affiliateId,
     ) {
     }
 
@@ -17,6 +17,10 @@ class DmmClient
      */
     public function fetchItems(int $offset = 1, int $hits = 100, string $floor = 'bl'): array
     {
+        if (! $this->apiId || ! $this->affiliateId) {
+            return [];
+        }
+
         $response = Http::timeout(20)->get('https://api.dmm.com/affiliate/v3/ItemList', [
             'api_id' => $this->apiId,
             'affiliate_id' => $this->affiliateId,
